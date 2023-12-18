@@ -1,22 +1,21 @@
 import { useState } from "react";
 import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
 import axios from "axios";
+import img from "../../assets/Bananita.png";
 
 import "./Product.css";
 
 const Product = () => {
   const [preferenceId, setPreferenceId] = useState(null);
 
-  initMercadoPago("", {
-    locale: "es-AR", // The most common are: 'pt-BR', 'es-AR' and 'en-US'
-  });
+  initMercadoPago("your_public_key");
 
   const createPreference = async () => {
     try {
-      const response = await axios.post("http://localhost:3000/create_preference", {
-        title: "Bananita contenta",
-        quantity: 1,
+      const response = await axios.post("http://localhost:8080/create_preference", {
+        description: "Bananita contenta",
         price: 100,
+        quantity: 1,
       });
 
       const { id } = response.data;
@@ -37,13 +36,10 @@ const Product = () => {
     <div className='card-product-container'>
       <div className='card-product'>
         <div className='card'>
-          <img
-            src='https://res.cloudinary.com/pabcode/image/upload/v1699871193/e-commerce/mopgcvdiepr8axkazmcp.png'
-            alt='Product Image'
-          />
+          <img src={img} alt='Product Image' />
           <h3>Bananita contenta</h3>
           <p className='price'>100 $</p>
-          <button onClick={handleBuy}>Comprar</button>
+          <button onClick={handleBuy}>Buy</button>
           {preferenceId && <Wallet initialization={{ preferenceId }} />}
         </div>
       </div>
